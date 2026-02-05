@@ -1,0 +1,9 @@
+node_modules/
+build/
+.react-router/
+.husky/
+.vscode/
+.github/workflows/ci.yml
+public/pdf.worker.min.mjs
+app/root.tsx
+eslint.config.js
