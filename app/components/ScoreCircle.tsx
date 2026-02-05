@@ -7,12 +7,12 @@ const ScoreCircle = ({ score = 75 }: { score: number }) => {
   const strokeDashoffset = circumference * (1 - progress);
 
   return (
-    <div className="relative w-[100px] h-[100px]">
+    <div className="relative h-[100px] w-[100px]">
       <svg
         height="100%"
         width="100%"
         viewBox="0 0 100 100"
-        className="transform -rotate-90"
+        className="-rotate-90 transform"
       >
         {/* Background circle */}
         <circle
@@ -45,7 +45,7 @@ const ScoreCircle = ({ score = 75 }: { score: number }) => {
 
       {/* Score and issues */}
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="font-semibold text-sm">{`${score}/100`}</span>
+        <span className="text-sm font-semibold">{`${score}/100`}</span>
       </div>
     </div>
   );
