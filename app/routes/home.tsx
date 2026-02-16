@@ -7,7 +7,6 @@ import { useEffect } from "react";
 
 export function meta() {
   const { auth } = usePuterStore();
-
   const navigate = useNavigate();
 
   useEffect(() => {
