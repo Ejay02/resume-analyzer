@@ -6,13 +6,6 @@ import { useNavigate } from "react-router";
 import { useEffect } from "react";
 
 export function meta() {
-  const { auth } = usePuterStore();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!auth.isAuthenticated) navigate("/auth?next=/");
-  }, [auth.isAuthenticated]);
-
   return [
     { title: "Resumind" },
     {
@@ -23,6 +16,13 @@ export function meta() {
 }
 
 export default function Home() {
+  const { auth } = usePuterStore();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!auth.isAuthenticated) navigate("/auth?next=/");
+  }, [auth.isAuthenticated, navigate]);
+
   return (
     <main className="bg-[url('/images/bg-main.svg')] bg-cover">
       <Navbar />

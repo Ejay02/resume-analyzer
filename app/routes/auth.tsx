@@ -7,17 +7,16 @@ export const meta = () => [
   { name: "description", content: "Log into your account" },
 ];
 
-const auth = () => {
+const Auth = () => {
   const { isLoading, auth } = usePuterStore();
 
   const location = useLocation();
   const next = location.search.split("next=")[1];
   const navigate = useNavigate();
 
-
   useEffect(() => {
     if (auth.isAuthenticated) navigate(next || "/");
-  }, [auth.isAuthenticated, next]);
+  }, [auth.isAuthenticated, next, navigate]);
 
   return (
     <main className="item-center flex min-h-screen justify-center bg-[url('/images/bg-auth.svg')] bg-cover">
@@ -53,4 +52,4 @@ const auth = () => {
   );
 };
 
-export default auth;
+export default Auth;
