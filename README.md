@@ -75,4 +75,4 @@ npm run build
 
 ## 📄 License
 
-[Add License Here]
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
