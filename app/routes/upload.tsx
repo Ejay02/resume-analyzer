@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import FileUploader from "~/components/FileUploader";
 import Navbar from "~/components/Navbar";
+import LoadingSpinner from "~/components/LoadingSpinner";
 import { convertPdfToImage } from "~/lib/pdf2img";
 import { usePuterStore } from "~/lib/puter";
 import { generateUUID } from "~/lib/utils";
@@ -31,12 +32,12 @@ const Upload = () => {
     file: File;
   }) => {
     setIsProcessing(true);
-    setStatusText("Uploading the file...");
+    setStatusText("Uploading file");
     const uploadedFile = await fs.upload([file]);
 
     if (!uploadedFile) return setStatusText("Error: Failed to upload file");
 
-    setStatusText("Converting to image ...");
+    setStatusText("Converting to image");
 
     const imageFile = await convertPdfToImage(file);
 
@@ -46,19 +47,19 @@ const Upload = () => {
       );
     }
 
-    setStatusText("Uploading the image ...");
+    setStatusText("Uploading image");
 
     const uploadedImage = await fs.upload([imageFile.file]);
     if (!uploadedImage) return setStatusText("Failed to upload image");
 
-    setStatusText("Preparing data ..");
+    setStatusText("Preparing data");
 
     const uuid = generateUUID();
 
     const data = {
       id: uuid,
       resumePath: uploadedFile.path,
-      imagePath: uploadedFile.path,
+      imagePath: uploadedImage.path,
       companyName,
       jobTitle,
       jobDescription,
@@ -67,7 +68,7 @@ const Upload = () => {
 
     await kv.set(`resume:${uuid}`, JSON.stringify(data));
 
-    setStatusText("Analyzing ...");
+    setStatusText("Analyzing");
 
     const feedback = await ai.feedback(
       uploadedFile.path,
@@ -84,7 +85,8 @@ const Upload = () => {
     data.feedback = JSON.parse(feedbackText);
     await kv.set(`resume:${uuid}`, JSON.stringify(data));
 
-    setStatusText("Analysis complete, redirecting ...");
+    setStatusText("Analysis complete, redirecting");
+    navigate(`/resume/${uuid}`);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -116,7 +118,12 @@ const Upload = () => {
           <h1 className="">Smart feedback for your dream job</h1>
           {isProcessing ? (
             <>
-              <h2>{statusText}</h2>
+              <div className="mb-4 flex justify-center">
+                <h2 className="flex items-end gap-1 text-lg font-medium text-gray-700">
+                  <span>{statusText}</span>
+                  <LoadingSpinner />
+                </h2>
+              </div>
               <img
                 src="/images/resume-scan.gif"
                 alt="scanning"
