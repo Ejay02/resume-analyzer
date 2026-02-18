@@ -6,6 +6,12 @@ export interface PdfConversionResult {
   error?: string;
 }
 
+export interface PdfConversionPagesResult {
+  imageUrls: string[];
+  files: File[];
+  error?: string;
+}
+
 let pdfjsLib: any = null;
 let isLoading = false;
 let loadPromise: Promise<any> | null = null;
@@ -80,6 +86,68 @@ export async function convertPdfToImage(
     return {
       imageUrl: "",
       file: null,
+      error: `Failed to convert PDF: ${err}`,
+    };
+  }
+}
+
+export async function convertPdfToImages(
+  file: File
+): Promise<PdfConversionPagesResult> {
+  try {
+    const lib = await loadPdfJs();
+
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await lib.getDocument({ data: arrayBuffer }).promise;
+    const imageUrls: string[] = [];
+    const files: File[] = [];
+
+    for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+      const page = await pdf.getPage(pageNumber);
+      const viewport = page.getViewport({ scale: 4 });
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+
+      if (context) {
+        context.imageSmoothingEnabled = true;
+        context.imageSmoothingQuality = "high";
+      }
+
+      await page.render({ canvasContext: context!, viewport }).promise;
+
+      const blob = await new Promise<Blob | null>((resolve) =>
+        canvas.toBlob(resolve, "image/png", 1.0)
+      );
+
+      if (!blob) {
+        return {
+          imageUrls: [],
+          files: [],
+          error: "Failed to create image blob",
+        };
+      }
+
+      const originalName = file.name.replace(/\.pdf$/i, "");
+      const imageFile = new File(
+        [blob],
+        `${originalName}-page-${pageNumber}.png`,
+        {
+          type: "image/png",
+        }
+      );
+
+      imageUrls.push(URL.createObjectURL(blob));
+      files.push(imageFile);
+    }
+
+    return { imageUrls, files };
+  } catch (err) {
+    return {
+      imageUrls: [],
+      files: [],
       error: `Failed to convert PDF: ${err}`,
     };
   }
