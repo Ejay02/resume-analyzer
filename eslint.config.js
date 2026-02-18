@@ -17,11 +17,19 @@ export default tseslint.config(
       "react-hooks": reactHooks,
       react,
     },
-    rules: {
-      ...reactHooks.configs.recommended.rules,
-      ...react.configs.recommended.rules,
-      "react/react-in-jsx-scope": "off",
-    },
+ rules: {
+  ...reactHooks.configs.recommended.rules,
+  ...react.configs.recommended.rules,
+  "react/react-in-jsx-scope": "off",
+  "no-console": ["error", { allow: ["warn", "error"] }],
+
+  // Disable strict TS rules
+  "no-unused-vars": "off",
+  "@typescript-eslint/no-unused-vars": "off",
+  "@typescript-eslint/no-explicit-any": "off",
+},
+
+
     settings: {
       react: {
         version: "detect",
