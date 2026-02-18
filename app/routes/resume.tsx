@@ -87,12 +87,12 @@ const Resume = () => {
           <h2 className="text-4xl font-bold text-black">Resume Review</h2>
           {feedback ? (
             <div className="animate-in fade-in flex flex-col gap-8 duration-1000">
-              <Summary feedback={feedback} />
+              {/* <Summary feedback={feedback} />
               <ATS
                 score={feedback.ATS.score || 0}
                 suggestions={feedback.ATS.tips || []}
               />
-              <Details feedback={feedback} />
+              <Details feedback={feedback} /> */}
             </div>
           ) : (
             <img
