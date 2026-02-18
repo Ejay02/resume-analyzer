@@ -28,3 +28,11 @@ export const formatSize = (bytes: number): string => {
 
   return roundWithUnit(bytes / GB, "GB");
 };
+
+/**
+ * Generates a random UUID (Universally Unique Identifier).
+ * @returns A string representing a random UUID.
+ */
+export const generateUUID = () => {
+  return crypto.randomUUID();
+};
