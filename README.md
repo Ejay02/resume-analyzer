@@ -55,7 +55,7 @@ Start the development server with Hot Module Replacement (HMR):
 npm run dev
 ```
 
-Your application will be available at `http://localhost:5173`.
+Your application will be available at `http://localhost:5173`
 
 ### Building for Production
 
