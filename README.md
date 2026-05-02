@@ -1,6 +1,6 @@
 # Resume Analyzer
 
-A powerful resume analysis tool built with React Router, designed to help job seekers optimize their resumes using AI-powered feedback.
+A resume analysis tool built with React Router, designed to help job seekers optimize their resumes using AI-powered feedback.
 
 ## 🚀 Features
 
